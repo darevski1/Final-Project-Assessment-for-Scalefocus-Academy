@@ -26,104 +26,47 @@ Checks if WordPress exists, if it doesn’t then it installs the chart.
 - jeniks
 
 
-Start the minikube with following command 
+Now we are going configure everything we need to deploy Jenkins. We will need the following:
 
-    minikube start
-
-
-Now we are going to deploy Jenkins in our kubernetes cluster, you can use the defualt namespace or you can create new one, im going to use the **default** namespace. First we create new directory jenikis, and create to new files named **jenkins-deployment.yaml** and **jenkins-service.yaml**
+1. Namespace
+2. Persisten Volume
 
 
+Create two yml files
 
-Create new namespace **jenkins** 
+jenkins-namespace.yaml
 
-    kubectl create namespace jenkins
-
-![Jenkins](./assets/images/1.png)
-verify
-![Jenkins](./assets/images/2.png)
-
-
-In the file jenkins-deployment.yaml add:
-
-
-    apiVersion: apps/v1
-    kind: Deployment
+    apiVersion: v1
+    kind: Namespace
     metadata:
-    name: jenkins
-    spec:
-    replicas: 1
-    selector:
-        matchLabels:
-        app: jenkins
-    template:
-        metadata:
-        labels:
-            app: jenkins
-        spec:
-        containers:
-        - name: jenkins
-            image: jenkins/jenkins:lts
-            ports:
-            - name: http-port
-                containerPort: 8080
-            - name: jnlp-port
-                containerPort: 50000
-            volumeMounts:
-            - name: jenkins-vol
-                mountPath: /var/jenkins_vol
-        volumes:
-            - name: jenkins-vol
-            emptyDir: {}
-
-Now create this deployment in the jenkins namespace:
-
-    kubectl create -f jenkins-deployment.yml --namespace jenkins
-
-Use kubectl to verify the pod’s state:
-
-    kubectl get pods -n jenkins
-
-    
-![Jenkins](./assets/images/3.png)
-
-Create and open a new file called jenkins-service.yaml:
-
-    apiVersion: v1
-        kind: Service
-        metadata:
         name: jenkins
-        spec:
-        type: NodePort
-        ports:
-            - port: 8080
-            targetPort: 8080
-            nodePort: 30000
-        selector:
-            app: jenkins
 
-    ---
+To create the namespace in your cluster use kubectl
+
+    kubectl create -f jenkins-namespace.yaml
+
+And we can check this by using
+
+    kubectl get ns
+
+Now lets create new persisten volume for this repository create new file **jenkins-volume.yaml**
 
     apiVersion: v1
-        kind: Service
-        metadata:
-        name: jenkins-jnlp
-        spec:
-        type: ClusterIP
-        ports:
-            - port: 50000
-            targetPort: 50000
-        selector:
-            app: jenkins
-
-Now create the Service in the same namespace:
-
-    kubectl create -f jenkins-service.yaml --namespace jenkins
-
-![Jenkins](./assets/images/4.png)
+    kind: PersistentVolume
+    metadata:
+    name: jenkins-pv
+    namespace: jenkins
+    spec:
+    storageClassName: jenkins-pv
+    accessModes:
+        - ReadWriteOnce
+    capacity:
+        storage: 20Gi
+    persistentVolumeReclaimPolicy: Retain
+    hostPath:
+        path: /data/jenkins-volume/
 
 
-Check that the Service is running:
+    kubectl create -f jenkins-volume.yaml
 
-![Jenkins](./assets/images/5.png)
 
