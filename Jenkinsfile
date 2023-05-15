@@ -21,19 +21,6 @@ pipeline {
                     }
                 }
             }
-            stage('test') {
-                steps {
-                      script {
-                    def wp_deployment = sh(script: "/bin/bash -c './kubectl get deployment final-project-wp-scalefocus -o json | ./jq .status.phase -r'")
-                    if (wp_namespacwp_deploymente == 'Active') {
-                            echo "wp deployment already created"
-                    } else {
-                            sh './kubectl create namespace wp'
-                    }
-                }
-                }
-            }
-            
         }
     }
 }
