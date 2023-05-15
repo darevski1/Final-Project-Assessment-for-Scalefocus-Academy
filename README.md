@@ -20,12 +20,78 @@ Checks if WordPress exists, if it doesn’t then it installs the chart.
 
  
 To run Jenkins on minikube cluster. We will need the following:
-We need to install Jenkins on our minikube cluster and persistent volume we can install with Helm Chart or manifest file. Using manifest files we need to create **serviceAccount.yaml**, **volume.yaml**, **deployment.yaml**, **service.yaml'**.
+We need to install Jenkins on our minikube cluster and persistent volume we can install with Helm Chart or manifest file. Using manifest files we need to create:
+
+**serviceAccount.yaml**, 
+**volume.yaml**, 
+**deployment.yaml**, 
+**service.yaml'**.
+
+We have to edit the file values.yaml, on line 543 the **LoadBalancer to type: ClusterIP**
+
+After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our respository.Create Jenkinsfile, to check **wp** namespace exist, and deploy wordpress from helm chart.
 
 
 
- After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create pipeline 
-
-
-
- 
+        Started by user Darko Avramovski
+        Obtained Jenkinsfile from git https://github.com/darevski1/Final-Project-Assessment-for-Scalefocus-Academy.git
+        [Pipeline] Start of Pipeline
+        [Pipeline] node
+        Running on Jenkins in /var/jenkins_home/workspace/wp
+        [Pipeline] {
+        [Pipeline] stage
+        [Pipeline] { (Declarative: Checkout SCM)
+        [Pipeline] checkout
+        Selected Git installation does not exist. Using Default
+        The recommended git tool is: NONE
+        using credential a428e41a-2029-4ae7-acd2-50eea8d76512
+        Cloning the remote Git repository
+        Cloning repository https://github.com/darevski1/Final-Project-Assessment-for-Scalefocus-Academy.git
+        > git init /var/jenkins_home/workspace/wp # timeout=10
+        Fetching upstream changes from https://github.com/darevski1/Final-Project-Assessment-for-Scalefocus-Academy.git
+        > git --version # timeout=10
+        > git --version # 'git version 2.30.2'
+        using GIT_ASKPASS to set credentials 
+        > git fetch --tags --force --progress -- https://github.com/darevski1/Final-Project-Assessment-for-Scalefocus-Academy.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+        > git config remote.origin.url https://github.com/darevski1/Final-Project-Assessment-for-Scalefocus-Academy.git # timeout=10
+        > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+        Avoid second fetch
+        > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+        Checking out Revision 153bfc4ba64f7b9e3e7bcfa31210357949261197 (refs/remotes/origin/main)
+        > git config core.sparsecheckout # timeout=10
+        > git checkout -f 153bfc4ba64f7b9e3e7bcfa31210357949261197 # timeout=10
+        Commit message: "Final-Project-Assessment-for-Scalefocus-Academy"
+        First time build. Skipping changelog.
+        [Pipeline] }
+        [Pipeline] // stage
+        [Pipeline] withEnv
+        [Pipeline] {
+        [Pipeline] stage
+        [Pipeline] { (Validate)
+        [Pipeline] sh
+        + echo Download required binaries
+        Download required binaries
+        + curl -L -s https://dl.k8s.io/release/stable.txt
+        + curl -LOs https://dl.k8s.io/release/v1.27.1/bin/linux/amd64/kubectl
+        + chmod +x kubectl
+        + curl -Os https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+        + mv jq-linux64 jq
+        + chmod +x jq
+        [Pipeline] script
+        [Pipeline] {
+        [Pipeline] sh
+        + /bin/bash -c ./kubectl get ns wp -o json | ./jq .status.phase -r
+        Error from server (NotFound): namespaces "wp" not found
+        [Pipeline] sh
+        + ./kubectl create namespace wp
+        namespace/wp created
+        [Pipeline] }
+        [Pipeline] // script
+        [Pipeline] }
+        [Pipeline] // stage
+        [Pipeline] }
+        [Pipeline] // withEnv
+        [Pipeline] }
+        [Pipeline] // node
+        [Pipeline] End of Pipeline
+        Finished: SUCCESS
