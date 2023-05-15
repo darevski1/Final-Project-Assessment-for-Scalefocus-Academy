@@ -14,7 +14,7 @@ pipeline {
                 // Check if wp namespace exists and create if it doesn't
                 script {
                     def wp_namespace = sh(script: "/bin/bash -c './kubectl get ns wp -o json | ./jq .status.phase -r'")
-                    if (wp_namespace == 'active') {
+                    if (wp_namespace == true) {
                             echo "wp namespace already created"
                     } else {
                             sh './kubectl create namespace wp'
