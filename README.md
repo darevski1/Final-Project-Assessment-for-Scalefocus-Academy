@@ -40,6 +40,4 @@ Create new namespace **jenkins**
 
     kubectl create namespace jenkins
 
-![Jenkis](./assets/images/1.png"Jenkis")
-
-![Jenkis](./assets/images/1.png"Jenkis")
+![image info](./assets/images/1.png)
