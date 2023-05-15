@@ -18,55 +18,14 @@ Checks if WordPress exists, if it doesn’t then it installs the chart.
 6. Load the home page of the WordPress to see the final result.
 7. Explain the project directly in a README.md file in your project repo.
 
-
-# Installing nesesery tools ??
-- minikube
-- helm chart 
-- docker
-- jeniks
+ 
+To run Jenkins on minikube cluster. We will need the following:
+We need to install Jenkins on our minikube cluster and persistent volume we can install with Helm Chart or manifest file. Using manifest files we need to create **serviceAccount.yaml**, **volume.yaml**, **deployment.yaml**, **service.yaml'**.
 
 
-Now we are going configure everything we need to deploy Jenkins. We will need the following:
 
-1. Namespace
-2. Persisten Volume
+ After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create pipeline 
 
 
-Create two yml files
 
-jenkins-namespace.yaml
-
-    apiVersion: v1
-    kind: Namespace
-    metadata:
-        name: jenkins
-
-To create the namespace in your cluster use kubectl
-
-    kubectl create -f jenkins-namespace.yaml
-
-And we can check this by using
-
-    kubectl get ns
-
-Now lets create new persisten volume for this repository create new file **jenkins-volume.yaml**
-
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-    name: jenkins-pv
-    namespace: jenkins
-    spec:
-    storageClassName: jenkins-pv
-    accessModes:
-        - ReadWriteOnce
-    capacity:
-        storage: 20Gi
-    persistentVolumeReclaimPolicy: Retain
-    hostPath:
-        path: /data/jenkins-volume/
-
-
-    kubectl create -f jenkins-volume.yaml
-
-
+ 
