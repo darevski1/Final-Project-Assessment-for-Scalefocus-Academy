@@ -192,16 +192,18 @@ After we setup jenkins on minikube we can log using following ip ***http://192.1
         [Pipeline] End of Pipeline
         Finished: SUCCESS
        
-
-To create port forwarding use the following command
+***To create port forwarding use the following command***
 
         kubectl port-forward --namespace wp svc/final-project-wp-scalefocus-wordpress 8000:80
 
 ![Deplyoment](./assets/images/33.png)
-
 
 We can view the wp site from our browser
 
 ![Deplyoment](./assets/images/44.png)
 
 ![Deplyoment](./assets/images/55.png)
+
+
+Darko Avramovski
+GitHub [GitHub](https://github.com/darevski1/Final-Project-Assessment-for-Scalefocus-Academy)
