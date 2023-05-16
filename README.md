@@ -18,25 +18,29 @@ Checks if WordPress exists, if it doesn’t then it installs the chart.
 6. Load the home page of the WordPress to see the final result.
 7. Explain the project directly in a README.md file in your project repo.
 
-#### We need to install Helm, Minkube and Jenkins.
+### **For this Assessment we need to install Helm, Minkube and Jenkins**.
 
-1. Install Helm - Official documentation [Jenkins](https://helm.sh/docs/intro/install/)
+- **Install Helm** - Official documentation [Jenkins](https://helm.sh/docs/intro/install/)
 
-2. Install Minikube - Official documentation [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- **Install Minikube** - Official documentation [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
-3. For setting up a ***Jenkins Cluster on Kubernetes***, we will do the following:
-we need to create four files **serviceAccount.yaml**,  **volume.yaml**, **deployment.yaml**,  **service.yaml'**. and save then in **jeniks** directory and execute them so jenkkins can be installed on minikube cluster. Official documentation [Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/)
+- For setting up a ***Jenkins Cluster on Kubernetes***, we will do the following:
+we need to create four files **serviceAccount.yaml**,  **volume.yaml**, **deployment.yaml**,  **service.yaml'**. and save then in **jeniks** directory and execute them so jenkins can be installed on minikube cluster. Official documentation [Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/)
 
-We can pull localy the offical wordpress image from github **bitnami/wordpress/** reposity, and edit ***values.yaml*** on line 534 replace t**ype:LoadBalancer** to **type: ClusterIP,** after we edit the offical image we can create our repository on GitHub which we are going to use for deployment for the wordpress site, and push to our repository **darevski1/Final-Project-Assessment-for-Scalefocus-Academy**.
+We can pull localy the offical wordpress image from github **bitnami/wordpress/** reposity, and edit ***values.yaml*** on line 534 replace **type: LoadBalancer** to **type: ClusterIP,** after we edit the offical image we can create our repository on GitHub which we are going to use for deployment for the wordpress site, and push to our repository **darevski1/Final-Project-Assessment-for-Scalefocus-Academy**.
 
-After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our github respository. Create Jenkinsfile we put our script for deplyoment, the file has 4 stages:
+After we setup jenkins on minikube we can log using following ip ***http://192.168.59.100:32000/***  to login and install required plugin **kuberentes  - Kubernetes plugin for Jenkins** the plugin is required
+ so we can create connection to our minikube local cluster. Next we need to create new pipeline and connect to our **github** respository. Create **Jenkinsfile** we put our script for deplyoment, the deplyoment proces has four stages:
 
 - ***Validate*** - stages check is the namespace **wp** exist, if not exist the namespace will be created
 - ***Install*** - wordpress and helm chard, here we install helm binary, and install wordpress helm chart
 - ***Make wordpress availble*** - in the stage we are running port forwarding, so the site can be acceess localy.
-- ***Browse WordPress site stage*** - !!! The site can`t be accees from outside becouse we put ClusterIP in values.yaml, **Cluster ip** default type for service in kubernetis, this type of address can be used only inside the cluster.
+- ***Browse WordPress site stage*** - !!! The site can`t be accees from outside because we put ClusterIP in values.yaml, **Cluster ip** default type for service in kubernetes, this type of address can be used only inside the cluster.
+
+#### We can run the pipeline we created and get following results
 
 ![Deplyoment](./assets/images/11.png)
+
 ![Deplyoment](./assets/images/22.png)
 
 
@@ -500,7 +504,7 @@ After we setup jenkins on minikube we can log in to jenikns and install required
         Finished: SUCCESS
 
 
-Create port forwarding
+To create port forwarding use the following command
 
         kubectl port-forward --namespace wp svc/final-project-wp-scalefocus-wordpress 8000:80
 

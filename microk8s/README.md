@@ -20,6 +20,9 @@
 After the installation of **microk8s** we can create new namespaces called jenkins
 
     microk8s kubectl create namespace jenkins
+namespace/jenkins created
+
+
 
 
 
