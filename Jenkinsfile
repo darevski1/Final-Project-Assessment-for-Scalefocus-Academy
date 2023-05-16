@@ -27,7 +27,7 @@ pipeline {
             steps {
                 // Install helm binary
                 sh '''
-                curl -Os https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+                https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
                 tar zxvf helm-v3.12.0-linux-amd64.tar.gz
                 '''
                 // Install WordPress helm chart
