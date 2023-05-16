@@ -49,7 +49,7 @@ pipeline {
         stage('Browse WordPress site') {
             steps {
                 sh '''
-                curl -s -D - -o http://final-project-wp-scalefocus-wordpress.wp.svc.cluster.local
+                curl -l http://final-project-wp-scalefocus-wordpress.wp.svc.cluster.local
                 '''
             }
         }
