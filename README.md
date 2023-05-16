@@ -191,7 +191,7 @@ After we setup jenkins on minikube we can log using following ip ***http://192.1
         [Pipeline] // node
         [Pipeline] End of Pipeline
         Finished: SUCCESS
-        
+       
 
 To create port forwarding use the following command
 
