@@ -23,19 +23,16 @@ We need to install Helm Carts, Minkube and Jenkins.
 For setting up a Jenkins Cluster on Kubernetes, we will do the following:
 we need to create four files **serviceAccount.yaml**,  **volume.yaml**, **deployment.yaml**,  **service.yaml'**. and execute them so jenkkins ke be installed on minikube cluster. Offical documentation [Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/#create-a-service-account)
 
+We can pull the offical wordpress image from github bitnami/wordpress/ reposity, and edit values.yaml on line 543 replace LoadBalancer to type: ClusterIP
 
 We have to edit the file values.yaml, on line 543 the **LoadBalancer to type: ClusterIP**
 
-After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our respository. Create Jenkinsfile we put our script for deplyoment, the file has 5 stages:
+After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our github respository. Create Jenkinsfile we put our script for deplyoment, the file has 4 stages:
 
 - Validate - stages check is the namespace **wp** exist, if not exist the namespace will be created
 - Install - wordpress and helm chard, here we install helm binary, and install wordpress helm chart
 - Make wordpress availble - in the stage we are running port forwarding, so the site can be acceess localy.
-- 
-
-
-
-
+- Browse WordPress site - !!! The site can`t be accees from outside becouse we put ClusterIP in values.yaml
 
 
         Started by user Darko Avramovski
