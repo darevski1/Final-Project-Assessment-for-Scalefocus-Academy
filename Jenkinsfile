@@ -27,7 +27,7 @@ pipeline {
             steps {
                 // Install helm binary
                 sh '''
-                curl https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+                curl -Os https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
                 tar zxvf helm-v3.12.0-linux-amd64.tar.gz
                 '''
                 // Install WordPress helm chart
@@ -49,7 +49,7 @@ pipeline {
         stage('Browse WordPress site') {
             steps {
                 sh '''
-                curl -v http://final-project-wp-scalefocus-wordpress.wp.svc.cluster.local
+                curl -s -D - -o http://final-project-wp-scalefocus-wordpress.wp.svc.cluster.local
                 '''
             }
         }
