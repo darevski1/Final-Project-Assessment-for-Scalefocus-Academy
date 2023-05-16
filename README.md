@@ -18,14 +18,10 @@ Checks if WordPress exists, if it doesn’t then it installs the chart.
 6. Load the home page of the WordPress to see the final result.
 7. Explain the project directly in a README.md file in your project repo.
 
- 
-To run Jenkins on minikube cluster. We will need the following:
-We need to install Jenkins on our minikube cluster and persistent volume we can install with Helm Chart or manifest file. Using manifest files we need to create:
+We need to install Helm Carts, Minkube and Jenkins.
 
-**serviceAccount.yaml**, 
-**volume.yaml**, 
-**deployment.yaml**, 
-**service.yaml'**.
+For setting up a Jenkins Cluster on Kubernetes, we will do the following:
+we need to create four files **serviceAccount.yaml**,  **volume.yaml**, **deployment.yaml**,  **service.yaml'**. and execute them so jenkkins ke be installed on minikube cluster. Offical documentation [Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/#create-a-service-account)
 
 
 We have to edit the file values.yaml, on line 543 the **LoadBalancer to type: ClusterIP**
@@ -33,8 +29,10 @@ We have to edit the file values.yaml, on line 543 the **LoadBalancer to type: Cl
 After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our respository. Create Jenkinsfile we put our script for deplyoment, the file has 5 stages:
 
 - Validate - stages check is the namespace **wp** exist, if not exist the namespace will be created
-- Install wordpress and helm chard, here we install helm binary, and install wordpress helm chart
-- Make wordpress availble - in the stage we are running port forwarding,
+- Install - wordpress and helm chard, here we install helm binary, and install wordpress helm chart
+- Make wordpress availble - in the stage we are running port forwarding, so the site can be acceess localy.
+- 
+
 
 
 
