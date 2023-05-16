@@ -27,9 +27,16 @@ We need to install Jenkins on our minikube cluster and persistent volume we can 
 **deployment.yaml**, 
 **service.yaml'**.
 
+
 We have to edit the file values.yaml, on line 543 the **LoadBalancer to type: ClusterIP**
 
-After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our respository.Create Jenkinsfile, to check **wp** namespace exist, and deploy wordpress from helm chart.
+After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our respository. Create Jenkinsfile we put our script for deplyoment, the file has 5 stages:
+
+- Validate - stages check is the namespace **wp** exist, if not exist the namespace will be created
+- Install wordpress and helm chard, here we install helm binary, and install wordpress helm chart
+- Make wordpress availble - in the stage we are running port forwarding,
+
+
 
 
 

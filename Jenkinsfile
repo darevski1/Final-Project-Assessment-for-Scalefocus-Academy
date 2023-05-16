@@ -53,5 +53,15 @@ pipeline {
                 '''
             }
         }
+        stage('Validate deployment') {
+            steps {
+                sh '''
+                while [[ $(kubectl get pods -l final-project-wp-scalefocus-wordpress-75b9fb6768-l9djr -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
+                    sleep 1
+                done
+                curl -v http://final-project-wp-scalefocus-wordpress.wp.svc.cluster.local
+                '''
+            }
+        }
     }
 }
