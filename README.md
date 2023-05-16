@@ -503,3 +503,10 @@ Create port forwarding
         kubectl port-forward --namespace wp svc/final-project-wp-scalefocus-wordpress 8000:80
 
 ![Deplyoment](./assets/images/33.png)
+
+
+We can view the wp site from our browser
+
+![Deplyoment](./assets/images/44.png)
+
+![Deplyoment](./assets/images/55.png)
