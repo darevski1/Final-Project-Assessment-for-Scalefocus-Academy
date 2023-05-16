@@ -13,13 +13,44 @@ pipeline {
                 '''
                 // Check if wp namespace exists and create if it doesn't
                 script {
-                    def wp_namespace = sh(script: "/bin/bash -c './kubectl get ns wp -o json | ./jq .status.phase -r'")
-                    if (wp_namespace == 'Active') {
-                            println "wp namespace already created"
-                    } else {
+                    def wp_namespace = sh(returnStdout: true, script: './kubectl get ns wp -o jsonpath=\'{.status.phase}\'');
+                    println(wp_namespace)
+                    if (wp_namespace != 'Active') {
                             sh './kubectl create namespace wp'
+                    } else {
+                            echo 'wp namespace already created'
                     }
                 }
+            }
+        }
+        stage('Install WordPress helm Chart') {
+            steps {
+                // Install helm binary
+                sh '''
+                curl -Os https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+                tar zxvf helm-v3.12.0-linux-amd64.tar.gz
+                '''
+                // Install WordPress helm chart
+                sh '''
+                ./linux-amd64/helm dependency build ./helm/wordpress/
+                ./linux-amd64/helm upgrade -i -f ./helm/wordpress/values.yaml final-project-wp-scalefocus ./helm/wordpress -n wp  
+                '''
+            }
+        }
+        stage('Make WordPress available') {
+            steps {
+                sh '''
+                ./kubectl port-forward --namespace wp svc/final-project-wp-scalefocus-wordpress 8000:80 &
+                echo "WordPress URL: http://127.0.0.1//"
+                echo "WordPress Admin URL: http://127.0.0.1//admin"
+                '''
+            }
+        }
+        stage('Browse WordPress site') {
+            steps {
+                sh '''
+                curl -v http://final-project-wp-scalefocus-wordpress.wp.svc.cluster.local
+                '''
             }
         }
     }
