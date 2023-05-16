@@ -32,7 +32,10 @@ After we setup jenkins on minikube we can log in to jenikns and install required
 - Validate - stages check is the namespace **wp** exist, if not exist the namespace will be created
 - Install - wordpress and helm chard, here we install helm binary, and install wordpress helm chart
 - Make wordpress availble - in the stage we are running port forwarding, so the site can be acceess localy.
-- Browse WordPress site - !!! The site can`t be accees from outside becouse we put ClusterIP in values.yaml
+- Browse WordPress site stage - !!! The site can`t be accees from outside becouse we put ClusterIP in values.yaml, **Cluster ip** default type for service in kubernetis, this type of address can be used only inside the cluster.
+
+![Deplyoment](./assets/images/11.png)
+![Deplyoment](./assets/images/22.png)
 
 
         Started by user Darko Avramovski
@@ -493,3 +496,10 @@ After we setup jenkins on minikube we can log in to jenikns and install required
         [Pipeline] // node
         [Pipeline] End of Pipeline
         Finished: SUCCESS
+
+
+Create port forwarding
+
+        kubectl port-forward --namespace wp svc/final-project-wp-scalefocus-wordpress 8000:80
+
+![Deplyoment](./assets/images/3.png)
