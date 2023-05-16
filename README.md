@@ -18,21 +18,23 @@ Checks if WordPress exists, if it doesn’t then it installs the chart.
 6. Load the home page of the WordPress to see the final result.
 7. Explain the project directly in a README.md file in your project repo.
 
-We need to install Helm Carts, Minkube and Jenkins.
+#### We need to install Helm, Minkube and Jenkins.
 
-For setting up a Jenkins Cluster on Kubernetes, we will do the following:
-we need to create four files **serviceAccount.yaml**,  **volume.yaml**, **deployment.yaml**,  **service.yaml'**. and execute them so jenkkins ke be installed on minikube cluster. Offical documentation [Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/#create-a-service-account)
+1. Install Helm - Official documentation [Jenkins](https://helm.sh/docs/intro/install/)
 
-We can pull the offical wordpress image from github bitnami/wordpress/ reposity, and edit values.yaml on line 543 replace LoadBalancer to type: ClusterIP
+2. Install Minikube - Official documentation [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
-We have to edit the file values.yaml, on line 543 the **LoadBalancer to type: ClusterIP**
+3. For setting up a ***Jenkins Cluster on Kubernetes***, we will do the following:
+we need to create four files **serviceAccount.yaml**,  **volume.yaml**, **deployment.yaml**,  **service.yaml'**. and save then in **jeniks** directory and execute them so jenkkins can be installed on minikube cluster. Official documentation [Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/)
+
+We can pull localy the offical wordpress image from github **bitnami/wordpress/** reposity, and edit ***values.yaml*** on line 534 replace t**ype:LoadBalancer** to **type: ClusterIP,** after we edit the offical image we can create our repository on GitHub which we are going to use for deployment for the wordpress site, and push to our repository **darevski1/Final-Project-Assessment-for-Scalefocus-Academy**.
 
 After we setup jenkins on minikube we can log in to jenikns and install required plugin **kuberentes** so we can create connection to our local cluster. Next we need to create new pipeline and connect to our github respository. Create Jenkinsfile we put our script for deplyoment, the file has 4 stages:
 
-- Validate - stages check is the namespace **wp** exist, if not exist the namespace will be created
-- Install - wordpress and helm chard, here we install helm binary, and install wordpress helm chart
-- Make wordpress availble - in the stage we are running port forwarding, so the site can be acceess localy.
-- Browse WordPress site stage - !!! The site can`t be accees from outside becouse we put ClusterIP in values.yaml, **Cluster ip** default type for service in kubernetis, this type of address can be used only inside the cluster.
+- ***Validate*** - stages check is the namespace **wp** exist, if not exist the namespace will be created
+- ***Install*** - wordpress and helm chard, here we install helm binary, and install wordpress helm chart
+- ***Make wordpress availble*** - in the stage we are running port forwarding, so the site can be acceess localy.
+- ***Browse WordPress site stage*** - !!! The site can`t be accees from outside becouse we put ClusterIP in values.yaml, **Cluster ip** default type for service in kubernetis, this type of address can be used only inside the cluster.
 
 ![Deplyoment](./assets/images/11.png)
 ![Deplyoment](./assets/images/22.png)
